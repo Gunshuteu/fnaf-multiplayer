@@ -1,1 +1,587 @@
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Roboto+Mono:wght@400;700&display=swap');
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+
+:root {
+    --primary: #ff6b6b;
+    --secondary: #4ecdc4;
+    --accent: #ffe66d;
+    --dark: #1a1a2e;
+    --darker: #0f0f1a;
+    --light: #f7f7f7;
+    --danger: #e74c3c;
+    --success: #2ecc71;
+}
+
+body {
+    font-family: 'Roboto Mono', monospace;
+    background: var(--darker);
+    color: var(--light);
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Screen Management */
+.screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.screen.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Menu Styling */
+.menu-container {
+    background: rgba(26, 26, 46, 0.95);
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
+    text-align: center;
+}
+
+h1, h2 {
+    font-family: 'Creepster', cursive;
+    color: var(--primary);
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+h1 {
+    font-size: 3rem;
+    letter-spacing: 3px;
+}
+
+.glitch {
+    position: relative;
+    animation: glitch 2s infinite;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch::before {
+    animation: glitch-1 0.3s infinite;
+    color: #0ff;
+    z-index: -1;
+}
+
+.glitch::after {
+    animation: glitch-2 0.3s infinite;
+    color: #f0f;
+    z-index: -2;
+}
+
+@keyframes glitch {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitch-1 {
+    0%, 100% { clip-path: inset(0 0 0 0); }
+    25% { clip-path: inset(0 100% 0 0); }
+    50% { clip-path: inset(0 0 100% 0); }
+    75% { clip-path: inset(100% 0 0 0); }
+}
+
+/* Buttons */
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #ff5252;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+}
+
+.btn-secondary {
+    background: var(--secondary);
+    color: var(--dark);
+}
+
+.btn-secondary:hover {
+    background: #3dbdb4;
+    transform: scale(1.05);
+}
+
+.btn-accent {
+    background: var(--accent);
+    color: var(--dark);
+}
+
+.btn-accent:hover {
+    background: #ffd93d;
+    transform: scale(1.05);
+}
+
+.btn-neutral {
+    background: #444;
+    color: var(--light);
+}
+
+.btn-neutral:hover {
+    background: #555;
+}
+
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    background: var(--danger);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* Room Code Input */
+.code-input {
+    font-size: 3rem;
+    text-align: center;
+    letter-spacing: 10px;
+    background: var(--darker);
+    border: 2px solid var(--primary);
+    color: var(--light);
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    margin: 20px 0;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.code-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(255, 230, 109, 0.3);
+}
+
+/* Lobby */
+.room-code-display {
+    background: var(--darker);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.code {
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 2rem;
+    margin-left: 10px;
+    letter-spacing: 5px;
+}
+
+.player-list {
+    background: var(--darker);
+    border-radius: 10px;
+    padding: 20px;
+    min-height: 150px;
+    margin-bottom: 20px;
+}
+
+.player-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    margin: 5px 0;
+    background: rgba(255,255,255,0.05);
+    border-radius: 5px;
+}
+
+.player-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+/* Customization */
+.preview-area {
+    background: var(--darker);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.color-option {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: transform 0.2s;
+}
+
+.color-option:hover {
+    transform: scale(1.2);
+}
+
+.color-option.selected {
+    border-color: white;
+    box-shadow: 0 0 10px currentColor;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    background: var(--darker);
+    color: var(--light);
+    border: 1px solid var(--primary);
+    border-radius: 5px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+/* Settings */
+.settings-list {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: var(--darker);
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+input[type="range"] {
+    width: 150px;
+    accent-color: var(--primary);
+}
+
+.key-input {
+    width: 50px;
+    text-align: center;
+    background: var(--darker);
+    border: 1px solid var(--primary);
+    color: var(--light);
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.key-input.recording {
+    border-color: var(--accent);
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Game Screen */
+#gameCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    cursor: crosshair;
+}
+
+.game-ui {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.game-ui > * {
+    pointer-events: auto;
+}
+
+/* Power Meter */
+.power-meter {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0,0,0,0.8);
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid var(--primary);
+}
+
+.power-bar {
+    width: 150px;
+    height: 20px;
+    background: #333;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.power-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--danger), var(--accent), var(--success));
+    transition: width 0.3s;
+    width: 100%;
+}
+
+/* Task List */
+.task-list {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.8);
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid var(--secondary);
+    max-width: 250px;
+}
+
+.task-item {
+    padding: 8px;
+    margin: 5px 0;
+    background: rgba(255,255,255,0.1);
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.task-item.completed {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+/* Door Controls */
+.door-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    background: rgba(0,0,0,0.8);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.door-btn, .camera-btn {
+    padding: 15px 25px;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: bold;
+    border: 2px solid var(--primary);
+    background: rgba(255, 107, 107, 0.2);
+    color: var(--light);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.door-btn.active {
+    background: var(--success);
+    border-color: var(--success);
+}
+
+.camera-btn {
+    background: rgba(78, 205, 196, 0.2);
+    border-color: var(--secondary);
+}
+
+.camera-btn:hover {
+    background: rgba(78, 205, 196, 0.4);
+}
+
+/* Camera Overlay */
+.camera-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,20,0,0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.camera-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.cam-view {
+    width: 300px;
+    height: 200px;
+    background: #001a00;
+    border: 2px solid #0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Creepster', cursive;
+    font-size: 1.5rem;
+    color: #0f0;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.cam-view:hover {
+    background: #003300;
+    box-shadow: 0 0 20px #0f0;
+}
+
+.btn-close-cam {
+    padding: 15px 40px;
+    background: var(--danger);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Task Progress */
+.task-progress {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.9);
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid var(--accent);
+    text-align: center;
+}
+
+.progress-bar {
+    width: 200px;
+    height: 20px;
+    background: #333;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.1s;
+}
+
+/* Mobile Controls */
+.mobile-controls {
+    display: none;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+.joystick {
+    width: 120px;
+    height: 120px;
+    background: rgba(255,255,255,0.1);
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    position: relative;
+    touch-action: none;
+}
+
+.joystick-knob {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 107, 107, 0.8);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s;
+}
+
+/* Game Over */
+.game-over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.game-over h2 {
+    font-size: 4rem;
+    animation: glitch 1s infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    h1 { font-size: 2rem; }
+    .menu-container { padding: 20px; }
+    .mobile-controls { display: block; }
+    .cam-view { width: 150px; height: 100px; font-size: 1rem; }
+}
