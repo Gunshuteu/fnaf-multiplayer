@@ -1,1 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FNAF Multiplayer Horror</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Menu -->
+    <div id="mainMenu" class="screen active">
+        <div class="menu-container">
+            <h1 class="glitch" data-text="SURVIVE THE NIGHT">SURVIVE THE NIGHT</h1>
+            <div class="menu-buttons">
+                <button id="btnCreate" class="btn btn-primary">Create Room</button>
+                <button id="btnJoin" class="btn btn-secondary">Join Room</button>
+                <button id="btnCustomize" class="btn btn-accent">Customize</button>
+                <button id="btnSettings" class="btn btn-neutral">Settings</button>
+            </div>
+        </div>
+    </div>
 
+    <!-- Join Room Screen -->
+    <div id="joinScreen" class="screen">
+        <div class="menu-container">
+            <h2>Enter Room Code</h2>
+            <input type="text" id="roomCodeInput" maxlength="4" placeholder="0000" class="code-input">
+            <div class="menu-buttons">
+                <button id="btnJoinConfirm" class="btn btn-primary">Join</button>
+                <button id="btnJoinBack" class="btn btn-neutral">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lobby Screen -->
+    <div id="lobbyScreen" class="screen">
+        <div class="menu-container">
+            <h2>Lobby</h2>
+            <div class="room-code-display">
+                <span>Room Code:</span>
+                <span id="lobbyCode" class="code">----</span>
+            </div>
+            <div id="playerList" class="player-list"></div>
+            <div class="menu-buttons">
+                <button id="btnStartGame" class="btn btn-primary" style="display:none;">Start Game</button>
+                <button id="btnLeaveLobby" class="btn btn-neutral">Leave</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customization Screen -->
+    <div id="customizeScreen" class="screen">
+        <div class="menu-container">
+            <h2>Customize Character</h2>
+            <div class="preview-area">
+                <canvas id="previewCanvas" width="200" height="200"></canvas>
+            </div>
+            <div class="customize-options">
+                <div class="option-group">
+                    <label>Color</label>
+                    <div id="colorPicker" class="color-grid"></div>
+                </div>
+                <div class="option-group">
+                    <label>Accessory</label>
+                    <select id="accessorySelect">
+                        <option value="none">None</option>
+                        <option value="hat">Top Hat</option>
+                        <option value="cap">Cap</option>
+                        <option value="headphones">Headphones</option>
+                        <option value="bow">Bow Tie</option>
+                    </select>
+                </div>
+            </div>
+            <div class="menu-buttons">
+                <button id="btnSaveCustomize" class="btn btn-primary">Save</button>
+                <button id="btnBackCustomize" class="btn btn-neutral">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Screen -->
+    <div id="settingsScreen" class="screen">
+        <div class="menu-container">
+            <h2>Settings</h2>
+            <div class="settings-list">
+                <div class="setting-item">
+                    <label>Master Volume</label>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="80">
+                </div>
+                <div class="setting-item">
+                    <label>Move Up</label>
+                    <input type="text" id="keyUp" class="key-input" value="w" readonly>
+                </div>
+                <div class="setting-item">
+                    <label>Move Down</label>
+                    <input type="text" id="keyDown" class="key-input" value="s" readonly>
+                </div>
+                <div class="setting-item">
+                    <label>Move Left</label>
+                    <input type="text" id="keyLeft" class="key-input" value="a" readonly>
+                </div>
+                <div class="setting-item">
+                    <label>Move Right</label>
+                    <input type="text" id="keyRight" class="key-input" value="d" readonly>
+                </div>
+            </div>
+            <div class="menu-buttons">
+                <button id="btnSaveSettings" class="btn btn-primary">Save</button>
+                <button id="btnBackSettings" class="btn btn-neutral">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="gameScreen" class="screen">
+        <canvas id="gameCanvas"></canvas>
+        
+        <!-- UI Overlay -->
+        <div id="gameUI" class="game-ui">
+            <!-- Power Meter -->
+            <div class="power-meter">
+                <div class="power-bar">
+                    <div id="powerFill" class="power-fill"></div>
+                </div>
+                <span>Power</span>
+            </div>
+
+            <!-- Task List -->
+            <div id="taskList" class="task-list"></div>
+
+            <!-- Door Controls -->
+            <div id="doorControls" class="door-controls" style="display:none;">
+                <button id="btnDoorLeft" class="door-btn">Door L</button>
+                <button id="btnDoorRight" class="door-btn">Door R</button>
+                <button id="btnCamera" class="camera-btn">📷 Cameras</button>
+            </div>
+
+            <!-- Camera Overlay -->
+            <div id="cameraOverlay" class="camera-overlay" style="display:none;">
+                <div class="camera-grid">
+                    <div class="cam-view" data-cam="1">CAM 01</div>
+                    <div class="cam-view" data-cam="2">CAM 02</div>
+                    <div class="cam-view" data-cam="3">CAM 03</div>
+                    <div class="cam-view" data-cam="4">CAM 04</div>
+                </div>
+                <button id="btnCloseCamera" class="btn-close-cam">Close</button>
+            </div>
+
+            <!-- Task Progress -->
+            <div id="taskProgress" class="task-progress" style="display:none;">
+                <div class="progress-bar">
+                    <div id="taskProgressFill" class="progress-fill"></div>
+                </div>
+                <button id="btnCancelTask" class="btn-small">Cancel</button>
+            </div>
+
+            <!-- Mobile Controls -->
+            <div id="mobileControls" class="mobile-controls">
+                <div id="joystick" class="joystick">
+                    <div id="joystickKnob" class="joystick-knob"></div>
+                </div>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="gameOverScreen" class="game-over" style="display:none;">
+                <h2 id="gameOverText">GAME OVER</h2>
+                <button id="btnReturnMenu" class="btn btn-primary">Return to Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
